@@ -1,0 +1,16 @@
+{
+  "type": "module",
+  "scripts": {
+    "create": "tsx ./src/createSite.ts",
+    "claim": "tsx ./src/claimSites.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "prettier": "^3.2.5",
+    "tsx": "^4.7.2"
+  }
+}
