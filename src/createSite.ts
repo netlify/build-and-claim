@@ -3,9 +3,6 @@ import "dotenv/config";
 import { getEnv, post } from "./utils";
 
 interface Props {
-  user: {
-    sessionID: string;
-  };
   github: {
     source: {
       repoURL: string;
@@ -43,11 +40,13 @@ export const netlifyHeaders = {
   "Content-Type": "application/json",
 };
 
-async function createClaimableSiteFromTemplate({
-  user,
-  github,
-  netlify,
-}: Props) {
+async function createClaimableSiteFromTemplate({ github, netlify }: Props) {
+  const userSessionID = process.argv[2];
+  if (!userSessionID) {
+    console.error(`Usage: npm run create <user_session_id>`);
+    return;
+  }
+
   console.log("Creating new template from source repo...");
   const template = await post("https://api.netlify.com/api/v1/templates", {
     headers: netlifyHeaders,
@@ -112,7 +111,7 @@ async function createClaimableSiteFromTemplate({
       account_slug: netlify.team.slug,
       name: netlify.site.name,
       template_id: template.id,
-      session_id: user.sessionID,
+      session_id: userSessionID,
       created_via: "ai",
       repo: {
         provider: "github",
@@ -133,21 +132,19 @@ async function createClaimableSiteFromTemplate({
 
   console.log("");
   console.log("Site created successfully!");
+  console.log("Site ID:  ", site.id);
   console.log("Admin URL:", site.admin_url);
-  console.log("Repo URL:", site.build_settings.repo_url);
+  console.log("Repo URL: ", site.build_settings.repo_url);
 }
 
 createClaimableSiteFromTemplate({
-  user: {
-    sessionID: "unique-user-identifier",
-  },
   github: {
     source: {
       repoURL: "https://github.com/jasonbarry/face64",
       defaultBranch: "main",
     },
     destination: {
-      repoName: "my-cool-new-site-from-ai",
+      repoName: "my-cool-new-repo-from-ai",
       repoPrivate: true,
       defaultBranch: "main",
     },
@@ -157,7 +154,7 @@ createClaimableSiteFromTemplate({
       slug: "jason-barry",
     },
     site: {
-      name: "globally-unique-site-name",
+      name: "my-globally-unique-site-name",
       publishDir: "site/",
       buildCommand: "echo 'hi'",
       env: {

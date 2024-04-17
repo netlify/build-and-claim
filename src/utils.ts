@@ -12,7 +12,7 @@ export async function post(
       console.error("Response is not ok", response);
       throw new Error("Response is not ok");
     }
-    if (!options.headers["Content-Type"]) {
+    if (!(options.headers["Content-Type"] || options.headers["Accept"])) {
       return response;
     }
     const json = await response.json();
