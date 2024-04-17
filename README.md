@@ -27,11 +27,15 @@ Then, [create a new personal access token](https://app.netlify.com/user/applicat
 
 Rename `.env.example` to `.env`, filling in your values as specified above.
 
+### Modify parameters passed to site creation function
+
+Tweak the parameters of the main `createClaimableSiteFromTemplate()` function in `src/createSite.ts` as you see fit.
+
 ## Running
 
 There are two scripts in this repo that are used for illustrative purposes. You can run them locally to try them out / verify them, but for production usage, you should copy them into your own web applications, adjusting to your codebases' conventions where needed.
 
-`npm run create` will perform the following steps. The user does not need to have a GitHub account or a Netlify account to do these steps. Instead, admin credentials from an owner's GitHub and Netlify accounts will be used.
+`npm run create <session_id>` will perform the following steps. The user does not need to have a GitHub account or a Netlify account to do these steps. Instead, admin credentials from an owner's GitHub and Netlify accounts will be used.
 
 - Create a new template from an input source repo
 - Create a new destination repo
@@ -42,4 +46,4 @@ There are two scripts in this repo that are used for illustrative purposes. You 
 
 The source repo, aka template, can be any public GitHub repo. The destination repo will be created on the GitHub admin's account (to be later transferred to a GitHub user's account). The new site will be created on the Netlify admin's account (to be later transferred to the user's Netlify account).
 
-`npm run claim` will claim all the sites that the user has created from the `npm run create` script.
+`npm run claim <session_id>` will claim all the sites that the user has created from the `npm run create` script.
